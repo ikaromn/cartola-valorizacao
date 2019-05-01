@@ -11,6 +11,8 @@ dj-database-url = "*"
 prettyconf = "*"
 psycopg2 = "*"
 requests = "*"
+gunicorn = "*"
+django-heroku = "*"
 
 [requires]
 python_version = "3.7"
