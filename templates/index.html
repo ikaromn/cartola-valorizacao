@@ -1,0 +1,31 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+    {% block htmltitle %}
+    <title>Cartola Valorization</title>
+    {%endblock%}
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width" />
+    <meta charset="UTF-8">
+    <meta name="description" content="Site para consultar jogadores e sua provável valorização na próxima rodada">
+    <meta name="author" content="Ikaro Pinheiro Lopes">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    {% block extrastyle %}{% endblock %}
+</head>
+<body>
+    <!-- Content -->
+    <div class="container-fluid">
+        <!-- Main Content -->
+        {% block content %}
+        {% endblock %}
+    </div>
+    <!-- / Content -->
+    {% block extrascripts %}
+    {% endblock %}
+    <script src="{% static 'dist/js/popper.min.js' %}"></script>
+    <script src="{% static 'dist/js/jquery-3-4-1.min.js' %}"></script>
+    <script src="{% static 'dist/js/bootstrap.min.js' %}"></script>
+</body>
+</html>

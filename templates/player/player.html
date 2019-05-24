@@ -1,53 +1,67 @@
+{% extends 'index.html' %}
+{% load humanize %}
 
-<html>
-<body>
-<p>Ordenar:</p>
-<ul>
-  <li><a href="/players/?order_by=apelido">apelido</a></li>
-  <li><a href="/players/?order_by=preco_num">preco_num</a></li>
-  <li><a href="/players/?order_by=pontos_num">pontos_num</a></li>
-  <li><a href="/players/?order_by=variacao_num">variacao_num</a></li>
-  <li><a href="/players/?order_by=media_num">media_num</a></li>
-  <li><a href="/players/?order_by=jogos_num">jogos_num</a></li>
-  <li><a href="/players/?order_by=status_nome">status_nome</a></li>
-  <li><a href="/players/?order_by=to_valorizate">to_valorizate</a></li>
-  <li><a href="/players/?order_by=position">position</a></li>
-  <li><a href="/players/?order_by=scout.DD">scout.DD</a></li>
-</ul>
-
-<table border="1">
-    <tr>
-        <td>Imagem</td>
-        <td>Apelido</td>
-        <td>Preço</td>
-        <td>Ultima pontuação</td>
-        <td>Valorização</td>
-        <td>Media</td>
-        <td>Número de jogos</td>
-        <td>status</td>
-        <td>Irá valorizar se fizer {{ request.GET.points }} pontos</td>
-        <td>Posição</td>
-        <td>Scouts</td>
-    </tr>
-    {% for atleta in data.atletas|dictsortreversed:data.order_by %}
-        <tr>
-            <td><img src="{{atleta.foto}}"/></td>
+{% block content %}
+  <div class="container">
+    <div class="dropdown">
+      <button class="btn btn-primary dropdown-toggle mr-4" type="button" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false">Ordenar:</button>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="/players/?order_by=apelido">apelido</a>
+        <a class="dropdown-item" href="/players/?order_by=preco_num">preco_num</a>
+        <a class="dropdown-item" href="/players/?order_by=pontos_num">pontos_num</a>
+        <a class="dropdown-item" href="/players/?order_by=variacao_num">variacao_num</a>
+        <a class="dropdown-item" href="/players/?order_by=media_num">media_num</a>
+        <a class="dropdown-item" href="/players/?order_by=jogos_num">jogos_num</a>
+        <a class="dropdown-item" href="/players/?order_by=status_nome">status_nome</a>
+        <a class="dropdown-item" href="/players/?order_by=to_valorizate">to_valorizate</a>
+        <a class="dropdown-item" href="/players/?order_by=position">position</a>
+        <a class="dropdown-item" href="/players/?order_by=scout.DD">scout.DD</a>
+      </div>
+    </div>
+    <table class="table table-striped table-responsive-md btn-table">
+      <thead>
+        <tr scope="row">
+          <td>Imagem</td>
+          <td>Apelido</td>
+          <td>Preço</td>
+          <td>Ultima pontuação</td>
+          <td>Valorização</td>
+          <td>Media</td>
+          <td>Jogos</td>
+          <td>status</td>
+          <td>Irá valorizar se fizer {{ request.GET.points }} pontos</td>
+          <td>Posição</td>
+          <td>Scouts</td>
+        </tr>
+      </thead>
+      <tbody>
+        {% for atleta in data.atletas|dictsortreversed:data.order_by %}
+          <tr scope="row">
+            <td><img class="img-thumbnail" src="{{atleta.foto}}"/></td>
             <td>{{atleta.apelido}}</td>
             <td>{{atleta.preco_num}}</td>
             <td>{{atleta.pontos_num}}</td>
             <td>{{atleta.variacao_num}}</td>
             <td>{{atleta.media_num}}</td>
-            <td>{{ atleta.jogos_num }}</td>
+            <td>{{atleta.jogos_num}}</td>
             <td>{{atleta.status_nome}}</td>
-            <td>{{atleta.to_valorizate}}</td>
+            <td>{{atleta.to_valorizate|floatformat:2|intcomma}}</td>
             <td>{{atleta.position}}</td>
             <td>
-                {% for scout, value in atleta.scout.items %}
-                  {{ scout }} = {{ value }}
-                {% endfor %}
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle mr-4" type="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">Scouts</button>
+                <div class="dropdown-menu">
+                  {% for scout, value in atleta.scout.items %}
+                    <li class="dropdown-item">{{ scout }} = {{ value }}</li>
+                  {% endfor %}
+                </div>
+              </div>
             </td>
-        </tr>
-    {% endfor %}
-</table>
-</body>
-</html>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

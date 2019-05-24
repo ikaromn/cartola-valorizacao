@@ -65,7 +65,7 @@ class Players(View):
             player.desfalques = i['rodada_id'] - i['jogos_num']
             player.jogos = i['jogos_num']
             player.media = i['media_num']
-            player.pontos = int(request.GET.get('points')) if request.GET.get('points') else 5
+            player.pontos = float(request.GET.get('points')) if request.GET.get('points') else 5
             player.ultima = i['pontos_num']
             player.preco = i['preco_num']
             player.id = i['atleta_id']
