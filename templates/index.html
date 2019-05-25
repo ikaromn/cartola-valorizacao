@@ -3,7 +3,7 @@
 <html>
 <head>
     {% block htmltitle %}
-    <title>Cartola Valorization</title>
+      <title>Cartola Valorization</title>
     {%endblock%}
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width" />
@@ -12,9 +12,15 @@
     <meta name="author" content="Ikaro Pinheiro Lopes">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{% static 'dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'dist/css/base.css' %}" rel="stylesheet">
     {% block extrastyle %}{% endblock %}
 </head>
 <body>
+    <header class="valorization-header">
+      <div class="align-content-center">
+        <img class="img-fluid cartola-header-img" src="{% static 'images/cartola-2019.jpg'%}"/>
+      </div>
+    </header>
     <!-- Content -->
     <div class="container-fluid">
         <!-- Main Content -->

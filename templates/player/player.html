@@ -5,22 +5,29 @@
   <div class="container">
     <div class="row">
       <div class="col-md-10">
-        <div class="dropdown">
-          <button class="btn btn-primary dropdown-toggle mr-4" type="button" data-toggle="dropdown"
-          aria-haspopup="true" aria-expanded="false">Ordenar</button>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="/players/?order_by=apelido">apelido</a>
-            <a class="dropdown-item" href="/players/?order_by=preco_num">preco_num</a>
-            <a class="dropdown-item" href="/players/?order_by=pontos_num">pontos_num</a>
-            <a class="dropdown-item" href="/players/?order_by=variacao_num">variacao_num</a>
-            <a class="dropdown-item" href="/players/?order_by=media_num">media_num</a>
-            <a class="dropdown-item" href="/players/?order_by=jogos_num">jogos_num</a>
-            <a class="dropdown-item" href="/players/?order_by=status_nome">status_nome</a>
-            <a class="dropdown-item" href="/players/?order_by=to_valorizate">to_valorizate</a>
-            <a class="dropdown-item" href="/players/?order_by=position">position</a>
-            <a class="dropdown-item" href="/players/?order_by=scout.DD">scout.DD</a>
-          </div>
-        </div>
+        <form class="row form-group" action="/players/" method="get">
+          <input value="{{ request.GET.points }}" type="number" name="points" class="form-text form-control col-md-2" placeholder="Pontuação prevista">
+          <select name="position" class="custom-select col-md-3">
+            <option value="{{ request.GET.position }}" selected>Selecione uma posição</option>
+            <option value="ata">Atacante</option>
+            <option value="mei">Meia</option>
+            <option value="zag">Zagueiro</option>
+            <option value="lat">Lateral</option>
+            <option value="gol">Goleiro</option>
+            <option value="tec">Técnico</option>
+          </select>
+          <select name="order_by" class="form-group custom-select col-md-3"">
+            <option value="{{ request.GET.order_by }}" selected>Ordenar por</option>
+            <option value="to_valorizate">Ira Valorizar</option>
+            <option value="pontos_num">Pontos</option>
+            <option value="preco_num">Preço</option>
+            <option value="variacao_num">Valorizou</option>
+            <option value="media_num">Média</option>
+            <option value="scout.RB">Roubada de bola</option>
+            <option value="scout.DD">Defesa Dificil</option>
+          </select>
+          <input type="submit" class="btn btn-primary align-right" placeholder="Pontuação prevista">
+        </form>
       </div>
       <div class="col col-md-2">
         <input id="search-player" type="text" class="form-text form-control" placeholder="Nome do jogador">
