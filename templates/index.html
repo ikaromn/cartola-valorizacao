@@ -22,10 +22,11 @@
         {% endblock %}
     </div>
     <!-- / Content -->
+    <script type="text/javascript" src="{% static 'dist/js/popper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'dist/js/jquery-3-4-1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'dist/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'dist/js/fuse.min.js' %}"></script>
     {% block extrascripts %}
     {% endblock %}
-    <script src="{% static 'dist/js/popper.min.js' %}"></script>
-    <script src="{% static 'dist/js/jquery-3-4-1.min.js' %}"></script>
-    <script src="{% static 'dist/js/bootstrap.min.js' %}"></script>
 </body>
 </html>

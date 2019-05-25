@@ -38,6 +38,21 @@ def rodadas_desfalques(player):
                         return desfalque_total
 
 
+def get_last_pontuation(player):
+    BASE_DIR = path.dirname(path.dirname(path.dirname(path.abspath(__file__))))
+    rodadas_dir = path.join(BASE_DIR, 'rodadas')
+    rodadas_num = len([name for name in listdir(rodadas_dir) if path.isfile(path.join(rodadas_dir, name))])
+
+    for x in range(rodadas_num,  0, -1):
+        file = f'{rodadas_dir}/rodada-{x}.json'
+        with open(file, 'r') as rodada:
+            json_rodada = json.load(rodada)
+            for atleta in json_rodada['atletas']:
+                if atleta['atleta_id'] == player.id:
+                    if atleta['pontos_num'] != 0 and atleta['variacao_num'] != 0:
+                        return atleta['pontos_num']
+
+
 def valorization(player):
     r = player.rodada_atual
     r0 = player.rodada_inicial
@@ -46,7 +61,7 @@ def valorization(player):
     c = player.preco
     a = player.media
     g = player.jogos
-    u = player.ultima
+    u = get_last_pontuation(player) or 0
     p = player.pontos
 
     a0 = 0

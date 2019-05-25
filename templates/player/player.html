@@ -1,22 +1,29 @@
 {% extends 'index.html' %}
-{% load humanize %}
+{% load humanize staticfiles %}
 
 {% block content %}
   <div class="container">
-    <div class="dropdown">
-      <button class="btn btn-primary dropdown-toggle mr-4" type="button" data-toggle="dropdown"
-      aria-haspopup="true" aria-expanded="false">Ordenar:</button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="/players/?order_by=apelido">apelido</a>
-        <a class="dropdown-item" href="/players/?order_by=preco_num">preco_num</a>
-        <a class="dropdown-item" href="/players/?order_by=pontos_num">pontos_num</a>
-        <a class="dropdown-item" href="/players/?order_by=variacao_num">variacao_num</a>
-        <a class="dropdown-item" href="/players/?order_by=media_num">media_num</a>
-        <a class="dropdown-item" href="/players/?order_by=jogos_num">jogos_num</a>
-        <a class="dropdown-item" href="/players/?order_by=status_nome">status_nome</a>
-        <a class="dropdown-item" href="/players/?order_by=to_valorizate">to_valorizate</a>
-        <a class="dropdown-item" href="/players/?order_by=position">position</a>
-        <a class="dropdown-item" href="/players/?order_by=scout.DD">scout.DD</a>
+    <div class="row">
+      <div class="col-md-10">
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle mr-4" type="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">Ordenar</button>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" href="/players/?order_by=apelido">apelido</a>
+            <a class="dropdown-item" href="/players/?order_by=preco_num">preco_num</a>
+            <a class="dropdown-item" href="/players/?order_by=pontos_num">pontos_num</a>
+            <a class="dropdown-item" href="/players/?order_by=variacao_num">variacao_num</a>
+            <a class="dropdown-item" href="/players/?order_by=media_num">media_num</a>
+            <a class="dropdown-item" href="/players/?order_by=jogos_num">jogos_num</a>
+            <a class="dropdown-item" href="/players/?order_by=status_nome">status_nome</a>
+            <a class="dropdown-item" href="/players/?order_by=to_valorizate">to_valorizate</a>
+            <a class="dropdown-item" href="/players/?order_by=position">position</a>
+            <a class="dropdown-item" href="/players/?order_by=scout.DD">scout.DD</a>
+          </div>
+        </div>
+      </div>
+      <div class="col col-md-2">
+        <input id="search-player" type="text" class="form-text form-control" placeholder="Nome do jogador">
       </div>
     </div>
     <table class="table table-striped table-responsive-md btn-table">
@@ -36,32 +43,94 @@
         </tr>
       </thead>
       <tbody>
-        {% for atleta in data.atletas|dictsortreversed:data.order_by %}
-          <tr scope="row">
-            <td><img class="img-thumbnail" src="{{atleta.foto}}"/></td>
-            <td>{{atleta.apelido}}</td>
-            <td>{{atleta.preco_num}}</td>
-            <td>{{atleta.pontos_num}}</td>
-            <td>{{atleta.variacao_num}}</td>
-            <td>{{atleta.media_num}}</td>
-            <td>{{atleta.jogos_num}}</td>
-            <td>{{atleta.status_nome}}</td>
-            <td>{{atleta.to_valorizate|floatformat:2|intcomma}}</td>
-            <td>{{atleta.position}}</td>
-            <td>
-              <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle mr-4" type="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">Scouts</button>
-                <div class="dropdown-menu">
-                  {% for scout, value in atleta.scout.items %}
-                    <li class="dropdown-item">{{ scout }} = {{ value }}</li>
-                  {% endfor %}
-                </div>
-              </div>
-            </td>
-          </tr>
-        {% endfor %}
       </tbody>
     </table>
   </div>
 {% endblock %}
+
+  {% block extrascripts %}
+    <script type="text/javascript">
+        var playersList = [
+              {% for atleta in data.atletas|dictsortreversed:data.order_by %}
+                  {
+                      foto: "{{atleta.foto}}",
+                      apelido: "{{ atleta.apelido }}",
+                      preco_num: {{ atleta.preco_num }},
+                      pontos_num: {{ atleta.pontos_num }},
+                      variacao_num: {{ atleta.variacao_num }},
+                      media_num: {{ atleta.media_num }},
+                      jogos_num: {{ atleta.jogos_num }},
+                      status_nome: "{{ atleta.status_nome }}",
+                      to_valorizate: {{ atleta.to_valorizate|floatformat:2|intcomma }},
+                      position: "{{ atleta.position }}",
+                      scouts: {
+                        {% for scout, value in atleta.scout.items %}
+                            {{ scout }}: {{value}},
+                        {% endfor %}
+                      }
+                  },
+              {% endfor %}
+          ];
+        $(function(){
+          let options = {
+              shouldSort: true,
+              threshold: 0.1,
+              location: 0,
+              distance: 100,
+              maxPatternLength: 32,
+              minMatchCharLength: 1,
+              keys: [
+                  "apelido",
+              ]
+          };
+          let fuse = new Fuse(playersList, options); // "list" is the item array
+
+          function createElementsByList(listPlayers) {
+              $('tbody').html("");
+              listPlayers.forEach(function(player) {
+                  let $player = $("<tr>");
+                  $player.attr('scope', 'row');
+                  $player.append('<td><img class="img-thumbnail" src=" ' + player.foto + '"/></td>');
+                  $player.append('<td>' + player.apelido + '</td>');
+                  $player.append('<td>' + player.preco_num + '</td>');
+                  $player.append('<td>' + player.pontos_num + '</td>');
+                  $player.append('<td>' + player.variacao_num + '</td>');
+                  $player.append('<td>' + player.media_num + '</td>');
+                  $player.append('<td>' + player.jogos_num + '</td>');
+                  $player.append('<td>' + player.status_nome + '</td>');
+                  $player.append('<td>' + player.to_valorizate + '</td>');
+                  $player.append('<td>' + player.position + '</td>');
+
+                  let $scout = $("<td>");
+                  let $scoutDropdown = $('<div class="dropdown">');
+                  $scoutDropdown.append('' +
+                      '<button class="btn btn-secondary dropdown-toggle mr-4" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Scouts</button>'
+                  );
+
+                  $scout.append($scoutDropdown);
+
+                  let $scoutDropdownMenu = $('<div class="dropdown-menu">');
+                  Object.keys(player.scouts).forEach(function(key) {
+                      $scoutDropdownMenu.append('<li class="dropdown-item">' + key + ' = ' + player.scouts[key]+ '</li>');
+                  });
+
+                  $scoutDropdown.append($scoutDropdownMenu);
+                  $player.append($scout);
+
+                  $('tbody').append($player);
+              });
+          }
+          createElementsByList(playersList);
+
+          $('#search-player').on('input',function createListByFuse() {
+              let $searchValue = $(this).val();
+              let result = fuse.search($searchValue);
+              if ($searchValue == '') {
+                  createElementsByList(playersList);
+              } else {
+                createElementsByList(result);
+              }
+          });
+        })
+    </script>
+  {% endblock %}
