@@ -9,3 +9,7 @@
     margin: 0 auto;
     display: block;
 }
+
+.search-filter-container {
+    margin-bottom: 20px;
+}
