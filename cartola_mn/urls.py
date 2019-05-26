@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.conf.urls import url
+
+from cartola_mn.apps.player.views import Players
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('players/', include('cartola_mn.apps.player.urls')),
+    url(r'^$', Players.as_view()),
 ]

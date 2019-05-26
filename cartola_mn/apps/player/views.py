@@ -74,9 +74,7 @@ class Players(View):
             player.desfalques = rodadas_desfalques(player)
             i['to_valorizate'] = valorization(player)
 
-            if 'RB' not in i['scout']:
-                i['scout']['RB'] = 0
-            i['scout'] = self.populate_scout(i['scout'])
+            i['scout'] = self.populate_scout(i['scout']) if i['scout'] else []
 
             new_data['atletas'].append(i)
 
@@ -95,3 +93,19 @@ class Team(View):
         data = c.make_request('my_team')
 
         return render(request, self.response_template, {'data': data})
+
+
+class PartialScore(View):
+    response_template = 'player/partial.html'
+
+    def get(self, request):
+        c = Cartola()
+        data = c.make_request('partial_score')
+        new_data = {'atletas': list()}
+
+        for _, value in data['atletas'].items():
+            value['foto'] = re.sub(r'([FORMATO])\w+', '140x140', str(value['foto']))
+
+            new_data['atletas'].append(value)
+
+        return render(request, self.response_template, {'data': new_data})

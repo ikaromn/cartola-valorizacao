@@ -1,0 +1,23 @@
+{% extends 'index.html' %}
+{% load staticfiles %}
+
+{% block content %}
+  <table class="table table-striped table-responsive-md btn-table">
+      <thead>
+        <tr scope="row">
+          <td>Imagem</td>
+          <td>Apelido</td>
+          <td>Pontuação</td>
+        </tr>
+      </thead>
+      <tbody>
+      {% for atleta in data.atletas|dictsortreversed:"pontuacao" %}
+        <tr scope="row">
+          <td><img class="img-thumbnail" src="{{ atleta.foto }}"/></td>
+          <td>{{ atleta.apelido }}</td>
+          <td>{{ atleta.pontuacao }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+{% endblock %}
