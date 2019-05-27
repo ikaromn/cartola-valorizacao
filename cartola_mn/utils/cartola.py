@@ -11,11 +11,15 @@ class Cartola:
             'x-glb-token': settings.CARTOLA_TOKEN,
         }
 
-    def _get_url(self, resource_name):
+    def _get_url(self, resource_name, **kwargs):
         resource = cartola_mapping[resource_name]
+
+        if '{' in resource:
+            resource = resource.format(**kwargs)
+
         return f'http://api.cartolafc.globo.com/{resource}'
 
-    def make_request(self, name):
+    def make_request(self, name, **kwargs):
         header = self._get_header()
-        response = requests.get(self._get_url(name), headers=header)
+        response = requests.get(self._get_url(name, **kwargs), headers=header)
         return json.loads(response.content)

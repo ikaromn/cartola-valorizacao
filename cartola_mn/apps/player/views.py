@@ -109,3 +109,33 @@ class PartialScore(View):
             new_data['atletas'].append(value)
 
         return render(request, self.response_template, {'data': new_data})
+
+
+class TeamPartialScore(View):
+    response_template = 'player/team-partial.html'
+    template_error = 'error.html'
+
+    def get(self, request):
+        c = Cartola()
+        team = request.GET.get('team_name')
+        round_num = request.GET.get('round')
+
+        try:
+            data = c.make_request('team_partial_score', team_name=team, round=round_num)
+            scores = c.make_request('partial_score')
+        except Exception as e:
+            return render(request, self.template_error, {'data': str(e)})
+
+        new_data = {
+            'atletas': list(),
+            'total_score': 0,
+        }
+        for i in data['atletas']:
+            i['foto'] = re.sub(r'([FORMATO])\w+', '140x140', str(i['foto']))
+            try:
+                i['pontos_num'] = scores['atletas'][str(i['atleta_id'])]['pontuacao']
+            except KeyError:
+                i['pontos_num'] = 0
+            new_data['total_score'] += i['pontos_num']
+            new_data['atletas'].append(i)
+        return render(request, self.response_template, {'data': new_data})

@@ -13,3 +13,12 @@
 .search-filter-container {
     margin-bottom: 20px;
 }
+
+.nav-tabs {
+    border-bottom: 1px solid #d26212;
+}
+
+.nav-link.active {
+    background-color: #f15814;
+    border-color: #d26212 #d26212 #f15814;
+}
