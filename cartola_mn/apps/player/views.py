@@ -117,7 +117,8 @@ class TeamPartialScore(View):
 
     def get(self, request):
         c = Cartola()
-        team = request.GET.get('team_name')
+        team_name = request.GET.get('team_name').lower()
+        team = team_name.replace(' ', '-')
         round_num = request.GET.get('round')
 
         try:

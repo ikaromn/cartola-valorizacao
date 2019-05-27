@@ -2,6 +2,19 @@
 {% load staticfiles %}
 
 {% block content %}
+  <form action="/players/partials/teams/" method="get">
+    <div class="form-row">
+      <div class="col">
+        <input type="number" name="round" class="form-control" placeholder="Rodada">
+      </div>
+      <div class="col">
+        <input type="text" name="team_name" class="form-control" placeholder="Nome do Time">
+      </div>
+      <div class="col">
+        <input type="submit" class="btn btn-primary align-right" placeholder="Buscar">
+      </div>
+    </div>
+  </form>
   <table class="table table-striped table-responsive-md btn-table">
       <thead>
         <tr scope="row">
